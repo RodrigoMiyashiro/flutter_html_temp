@@ -1,46 +1,47 @@
 PODS:
-  - Flutter (1.0.0)
-  - screen (0.0.1):
-    - Flutter
-  - video_player (0.0.1):
-    - Flutter
-  - video_player_web (0.0.1):
+  - Flutter (3.0.0)
+  - video_player_avfoundation (0.0.1):
     - Flutter
   - wakelock (0.0.1):
     - Flutter
-  - webview_flutter (0.0.1):
+  - wakelock_macos (0.0.1):
+    - Flutter
+  - wakelock_web (0.0.1):
+    - Flutter
+  - webview_media (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
-  - screen (from `.symlinks/plugins/screen/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
-  - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+  - wakelock_macos (from `.symlinks/plugins/wakelock_macos/ios`)
+  - wakelock_web (from `.symlinks/plugins/wakelock_web/ios`)
+  - webview_media (from `.symlinks/plugins/webview_media/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Flutter
 
 EXTERNAL SOURCES:
-  Flutter:
-    :path: ".symlinks/flutter/ios"
-  screen:
-    :path: ".symlinks/plugins/screen/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
-  video_player_web:
-    :path: ".symlinks/plugins/video_player_web/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
+  wakelock_macos:
+    :path: ".symlinks/plugins/wakelock_macos/ios"
+  wakelock_web:
+    :path: ".symlinks/plugins/wakelock_web/ios"
+  webview_media:
+    :path: ".symlinks/plugins/webview_media/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
-  video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
-  wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
-  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+  Flutter: aef388869c2d2beecc8df50c818fa66e9c6eb1fb
+  video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  wakelock_macos: 44d64dce2920087ad53dacd91f544d95b91079c7
+  wakelock_web: 926054421610791ae9c8bdd36666798e67be5a4c
+  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
 
-PODFILE CHECKSUM: 7fb83752f59ead6285236625b82473f90b1cb932
+PODFILE CHECKSUM: 5dc5a99c1d22194762aff7fd46223b051959758b
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.11.2
