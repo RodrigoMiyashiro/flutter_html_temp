@@ -23,7 +23,7 @@ dependencies:
   webview_media:
     git:
       url: https://github.com/skore-io/webview_media
-      ref: update/add_header_in_navigation_request
+      ref: fix/android_compile
 
   # Plugins for rendering the <audio> tag.
   chewie_audio: ^1.0.0
