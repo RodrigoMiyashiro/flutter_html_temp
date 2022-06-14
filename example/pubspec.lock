@@ -278,7 +278,7 @@ packages:
     description:
       path: "."
       ref: "fix/android_compile"
-      resolved-ref: c31759f8a287d9b6238d6212b3014823d64276dc
+      resolved-ref: "37842519582b35cd329acc3cac663d8378549d6e"
       url: "https://github.com/skore-io/webview_media"
     source: git
     version: "0.1.2"

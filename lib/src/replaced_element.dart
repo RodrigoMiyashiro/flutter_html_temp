@@ -14,7 +14,7 @@ import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/src/html_elements.dart';
 import 'package:flutter_html/style.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:webview_media/webview_flutter.dart';
+import 'package:webview_media/webview_flutter_media.dart';
 
 /// A [ReplacedElement] is a type of [StyledElement] that does not require its [children] to be rendered.
 ///

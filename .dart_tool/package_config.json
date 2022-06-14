@@ -231,7 +231,7 @@
     },
     {
       "name": "webview_media",
-      "rootUri": "file:///Users/rodrigomiyashiro/Documents/SDK/flutter/.pub-cache/git/webview_media-c31759f8a287d9b6238d6212b3014823d64276dc/",
+      "rootUri": "file:///Users/rodrigomiyashiro/Documents/SDK/flutter/.pub-cache/git/webview_media-37842519582b35cd329acc3cac663d8378549d6e/",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -248,7 +248,7 @@
       "languageVersion": "2.2"
     }
   ],
-  "generated": "2022-06-14T02:08:11.859035Z",
+  "generated": "2022-06-14T14:43:49.445527Z",
   "generator": "pub",
   "generatorVersion": "2.10.5"
 }
