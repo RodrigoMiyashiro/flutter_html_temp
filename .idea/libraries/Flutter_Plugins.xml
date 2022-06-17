@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../../../../SDK/flutter/.pub-cache/git/webview_media-c31759f8a287d9b6238d6212b3014823d64276dc" />
+      <root url="file://$PROJECT_DIR$/../../../../../../SDK/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.12+5" />
+      <root url="file://$PROJECT_DIR$/../../../../../../SDK/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.1.4+2" />
+      <root url="file://$PROJECT_DIR$/../../../../../../SDK/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-0.1.4+1" />
+      <root url="file://$PROJECT_DIR$/../../../../../../SDK/flutter/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
