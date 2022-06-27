@@ -8,7 +8,7 @@ PODS:
     - Flutter
   - wakelock_web (0.0.1):
     - Flutter
-  - webview_media (0.0.1):
+  - webview_media (0.0.2):
     - Flutter
 
 DEPENDENCIES:
@@ -40,7 +40,7 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   wakelock_macos: 44d64dce2920087ad53dacd91f544d95b91079c7
   wakelock_web: 926054421610791ae9c8bdd36666798e67be5a4c
-  webview_media: 33604c2c1805f41bd0c6749c4d7de24b8cb4d81d
+  webview_media: c4060ebdd4dc922460381f97df4bafea2b537574
 
 PODFILE CHECKSUM: 5dc5a99c1d22194762aff7fd46223b051959758b
 
