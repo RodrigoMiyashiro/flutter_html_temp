@@ -30,6 +30,9 @@ dependencies:
   # Plugins for rendering the <svg> tag.
   flutter_svg: ^0.18.0
 
+  # http for verifications of links
+  http:
+
   flutter:
     sdk: flutter
 

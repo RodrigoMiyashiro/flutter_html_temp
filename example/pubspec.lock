@@ -128,6 +128,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.0+4"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.12.2"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.4"
   matcher:
     dependency: transitive
     description:
@@ -170,6 +184,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  pedantic:
+    dependency: transitive
+    description:
+      name: pedantic
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.9.2"
   petitparser:
     dependency: transitive
     description:
@@ -277,8 +298,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: "fix/android_compile"
-      resolved-ref: "37842519582b35cd329acc3cac663d8378549d6e"
+      ref: HEAD
+      resolved-ref: ec47ac16fe4e8a253f2f13a107e38a6b214784e9
       url: "https://github.com/skore-io/webview_media"
     source: git
     version: "0.1.2"
