@@ -197,8 +197,8 @@ class IframeContentElement extends ReplacedElement {
   @override
   Widget toWidget(RenderContext context) {
     return Container(
-      width: width ?? (height ?? 150) * 2,
-      height: height ?? (width ?? 300) / 2,
+      width: MediaQuery.of(context.buildContext).size.width,
+      height: MediaQuery.of(context.buildContext).size.height * 0.75,
       child: WebView(
         initialUrl: src,
         javascriptMode: JavascriptMode.unrestricted,
