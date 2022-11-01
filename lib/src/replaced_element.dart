@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
@@ -193,19 +194,25 @@ class IframeContentElement extends ReplacedElement {
     this.height,
     dom.Element node,
   }) : super(name: name, style: style, node: node);
+  static bool _hasError = false;
 
   @override
   Widget toWidget(RenderContext context) {
     return Container(
       width: MediaQuery.of(context.buildContext).size.width,
       height: MediaQuery.of(context.buildContext).size.height * 0.75,
-      child: WebView(
-        initialUrl: src,
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureRecognizers: {
-          Factory(() => PlatformViewVerticalGestureRecognizer())
-        },
-      ),
+      child: !_hasError
+          ? WebView(
+              initialUrl: src,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebResourceError: (error) {
+                _hasError = true;
+              },
+              gestureRecognizers: {
+                Factory(() => PlatformViewVerticalGestureRecognizer())
+              },
+            )
+          : Icon(Icons.error, size: 50),
     );
   }
 }
