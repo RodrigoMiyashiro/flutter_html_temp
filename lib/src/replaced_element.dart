@@ -134,8 +134,12 @@ class ImageContentElement extends ReplacedElement {
           if (snapshot.data) {
             return Image.network(
               src,
-              errorBuilder: (context, error, stackTrace) {
-                return Container();
+              errorBuilder: (_, error, stackTrace) {
+                return Center(
+                    child: Icon(
+                  Icons.error,
+                  size: 50,
+                ));
               },
               frameBuilder: (ctx, child, frame, _) {
                 if (frame == null) {
@@ -146,7 +150,11 @@ class ImageContentElement extends ReplacedElement {
               },
             );
           }
-          return Container();
+          return Center(
+              child: Icon(
+            Icons.error,
+            size: 50,
+          ));
         },
       );
     }
