@@ -194,25 +194,35 @@ class IframeContentElement extends ReplacedElement {
     this.height,
     dom.Element node,
   }) : super(name: name, style: style, node: node);
-  static bool _hasError = false;
 
   @override
   Widget toWidget(RenderContext context) {
-    return Container(
-      width: MediaQuery.of(context.buildContext).size.width,
-      height: MediaQuery.of(context.buildContext).size.height * 0.75,
-      child: !_hasError
-          ? WebView(
+    return FutureBuilder<bool>(
+      future: _verificationLinkIsValid(src),
+      initialData: null,
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.data) {
+          return Container(
+            width: MediaQuery.of(context.buildContext).size.width,
+            height: MediaQuery.of(context.buildContext).size.height * 0.75,
+            child: WebView(
               initialUrl: src,
               javascriptMode: JavascriptMode.unrestricted,
-              onWebResourceError: (error) {
-                _hasError = true;
-              },
               gestureRecognizers: {
                 Factory(() => PlatformViewVerticalGestureRecognizer())
               },
-            )
-          : Icon(Icons.error, size: 50),
+            ),
+          );
+        }
+        return Center(
+            child: Icon(
+          Icons.error,
+          size: 50,
+        ));
+      },
     );
   }
 }
