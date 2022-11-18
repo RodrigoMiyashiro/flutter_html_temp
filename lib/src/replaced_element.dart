@@ -424,7 +424,6 @@ class RubyElement extends ReplacedElement {
 }
 
 ReplacedElement parseReplacedElement(dom.Element element) {
-  print('LOCAL NAME ' + element.localName);
   switch (element.localName) {
     case "audio":
       final sources = <String>[
