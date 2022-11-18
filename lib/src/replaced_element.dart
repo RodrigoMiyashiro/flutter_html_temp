@@ -195,10 +195,18 @@ class IframeContentElement extends ReplacedElement {
     dom.Element node,
   }) : super(name: name, style: style, node: node);
 
+  String get _urlWebView {
+    String result = src;
+    if (result.startsWith('//')) {
+      result = result.replaceRange(0, 2, 'https://');
+    }
+    return Uri.parse(result).toString();
+  }
+
   @override
   Widget toWidget(RenderContext context) {
     return FutureBuilder<bool>(
-      future: _verificationLinkIsValid(src),
+      future: _verificationLinkIsValid(_urlWebView),
       initialData: null,
       builder: (_, snapshot) {
         if (!snapshot.hasData) {
@@ -209,7 +217,7 @@ class IframeContentElement extends ReplacedElement {
             width: MediaQuery.of(context.buildContext).size.width,
             height: MediaQuery.of(context.buildContext).size.height * 0.75,
             child: WebView(
-              initialUrl: src,
+              initialUrl: _urlWebView,
               javascriptMode: JavascriptMode.unrestricted,
               gestureRecognizers: {
                 Factory(() => PlatformViewVerticalGestureRecognizer())
@@ -303,6 +311,7 @@ class VideoContentElement extends ReplacedElement {
 
   @override
   Widget toWidget(RenderContext context) {
+    print('PLAYER VIDEO ${src.first}');
     return Container(
         width: width ?? (height ?? 150) * 2,
         height: height ?? (width ?? 300) / 2,
@@ -415,6 +424,7 @@ class RubyElement extends ReplacedElement {
 }
 
 ReplacedElement parseReplacedElement(dom.Element element) {
+  print('LOCAL NAME ' + element.localName);
   switch (element.localName) {
     case "audio":
       final sources = <String>[
