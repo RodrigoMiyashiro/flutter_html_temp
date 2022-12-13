@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:chewie/chewie.dart';
 import 'package:chewie_audio/chewie_audio.dart';
 import 'package:flutter/foundation.dart';
@@ -39,6 +40,15 @@ abstract class ReplacedElement extends StyledElement {
   }
 
   Widget toWidget(RenderContext context);
+}
+
+Future<bool> _verificationLinkIsValid(String url) async {
+  try {
+    final response = await http.get(Uri.parse(url));
+    return response != null && response.body != null;
+  } catch (_) {
+    return false;
+  }
 }
 
 /// [TextContentElement] is a [ContentElement] with plaintext as its content.
@@ -115,20 +125,37 @@ class ImageContentElement extends ReplacedElement {
         },
       );
     } else {
-      precacheImage(
-        NetworkImage(src),
-        context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
-          context.parser.onImageError?.call(exception, stackTrace);
-        },
-      );
-      imageWidget = Image.network(
-        src,
-        frameBuilder: (ctx, child, frame, _) {
-          if (frame == null) {
-            return Text(alt ?? "", style: context.style.generateTextStyle());
+      imageWidget = FutureBuilder<bool>(
+        future: _verificationLinkIsValid(src),
+        initialData: null,
+        builder: (_, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
           }
-          return child;
+          if (snapshot.data) {
+            return Image.network(
+              src,
+              errorBuilder: (_, error, stackTrace) {
+                return Center(
+                    child: Icon(
+                  Icons.error,
+                  size: 50,
+                ));
+              },
+              frameBuilder: (ctx, child, frame, _) {
+                if (frame == null) {
+                  return Text(alt ?? "",
+                      style: context.style.generateTextStyle());
+                }
+                return child;
+              },
+            );
+          }
+          return Center(
+              child: Icon(
+            Icons.error,
+            size: 50,
+          ));
         },
       );
     }
@@ -168,18 +195,42 @@ class IframeContentElement extends ReplacedElement {
     dom.Element node,
   }) : super(name: name, style: style, node: node);
 
+  String get _urlWebView {
+    String result = src;
+    if (result.startsWith('//')) {
+      result = result.replaceRange(0, 2, 'https://');
+    }
+    return Uri.parse(result).toString();
+  }
+
   @override
   Widget toWidget(RenderContext context) {
-    return Container(
-      width: width ?? (height ?? 150) * 2,
-      height: height ?? (width ?? 300) / 2,
-      child: WebView(
-        initialUrl: src,
-        javascriptMode: JavascriptMode.unrestricted,
-        gestureRecognizers: {
-          Factory(() => PlatformViewVerticalGestureRecognizer())
-        },
-      ),
+    return FutureBuilder<bool>(
+      future: _verificationLinkIsValid(_urlWebView),
+      initialData: null,
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.data) {
+          return Container(
+            width: MediaQuery.of(context.buildContext).size.width,
+            height: MediaQuery.of(context.buildContext).size.height * 0.75,
+            child: WebView(
+              initialUrl: _urlWebView,
+              javascriptMode: JavascriptMode.unrestricted,
+              gestureRecognizers: {
+                Factory(() => PlatformViewVerticalGestureRecognizer())
+              },
+            ),
+          );
+        }
+        return Center(
+            child: Icon(
+          Icons.error,
+          size: 50,
+        ));
+      },
     );
   }
 }
@@ -206,19 +257,30 @@ class AudioContentElement extends ReplacedElement {
   @override
   Widget toWidget(RenderContext context) {
     return Container(
-      width: context.style.width ?? 300,
-      child: ChewieAudio(
-        controller: ChewieAudioController(
-          videoPlayerController: VideoPlayerController.network(
-            src.first ?? "",
-          ),
-          autoPlay: autoplay,
-          looping: loop,
-          showControls: showControls,
-          autoInitialize: true,
-        ),
-      ),
-    );
+        width: context.style.width ?? 300,
+        child: FutureBuilder<bool>(
+          future: _verificationLinkIsValid(src.first),
+          initialData: null,
+          builder: (_, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.data) {
+              return ChewieAudio(
+                controller: ChewieAudioController(
+                  videoPlayerController: VideoPlayerController.network(
+                    src.first ?? "",
+                  ),
+                  autoPlay: autoplay,
+                  looping: loop,
+                  showControls: showControls,
+                  autoInitialize: true,
+                ),
+              );
+            }
+            return Container();
+          },
+        ));
   }
 }
 
@@ -249,24 +311,36 @@ class VideoContentElement extends ReplacedElement {
 
   @override
   Widget toWidget(RenderContext context) {
+    print('PLAYER VIDEO ${src.first}');
     return Container(
-      width: width ?? (height ?? 150) * 2,
-      height: height ?? (width ?? 300) / 2,
-      child: Chewie(
-        controller: ChewieController(
-          videoPlayerController: VideoPlayerController.network(
-            src.first ?? "",
-          ),
-          placeholder: poster != null
-              ? Image.network(poster)
-              : Container(color: Colors.black),
-          autoPlay: autoplay,
-          looping: loop,
-          showControls: showControls,
-          autoInitialize: true,
-        ),
-      ),
-    );
+        width: width ?? (height ?? 150) * 2,
+        height: height ?? (width ?? 300) / 2,
+        child: FutureBuilder<bool>(
+          future: _verificationLinkIsValid(src.first),
+          initialData: null,
+          builder: (_, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.data) {
+              return Chewie(
+                controller: ChewieController(
+                  videoPlayerController: VideoPlayerController.network(
+                    src.first ?? "",
+                  ),
+                  placeholder: poster != null
+                      ? Image.network(poster)
+                      : Container(color: Colors.black),
+                  autoPlay: autoplay,
+                  looping: loop,
+                  showControls: showControls,
+                  autoInitialize: true,
+                ),
+              );
+            }
+            return Container();
+          },
+        ));
   }
 }
 
