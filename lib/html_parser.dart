@@ -42,9 +42,16 @@ class HtmlParser extends StatelessWidget {
     this.blacklistedElements,
   });
 
+  String get _dataRemovedSpacesHTML {
+    if (htmlData.contains('<br></p>')) {
+      return htmlData.replaceAll('<br></p>', '');
+    }
+    return htmlData;
+  }
+
   @override
   Widget build(BuildContext context) {
-    dom.Document document = parseHTML(htmlData);
+    dom.Document document = parseHTML(_dataRemovedSpacesHTML);
     StyledElement lexedTree = lexDomTree(
       document,
       customRender?.keys?.toList() ?? [],
@@ -69,7 +76,7 @@ class HtmlParser extends StatelessWidget {
     // scaling is used, but relies on https://github.com/flutter/flutter/pull/59711
     // to wrap everything when larger accessibility fonts are used.
     return StyledText(
-      textSpan: parsedTree, 
+      textSpan: parsedTree,
       style: cleanedTree.style,
       textScaleFactor: MediaQuery.of(context).textScaleFactor,
     );
