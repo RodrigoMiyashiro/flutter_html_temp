@@ -1,4 +1,4 @@
-const testData = <String, String>{
+const Map<String, String> testData = <String, String>{
   'a': '<a>Hello, World!</a>',
   'abbr': '<abbr>HLO-WRLD</abbr>',
   'acronym': '<acronym>HW</acronym>',

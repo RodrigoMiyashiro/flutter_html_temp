@@ -6,12 +6,12 @@ import 'package:html/src/query_selector.dart';
 
 /// A [StyledElement] applies a style to all of its children.
 class StyledElement {
-  final String name;
-  final String elementId;
-  final List<String> elementClasses;
-  List<StyledElement> children;
-  Style style;
-  final dom.Node _node;
+  final String? name;
+  final String? elementId;
+  final List<String>? elementClasses;
+  List<StyledElement>? children;
+  Style? style;
+  final dom.Node? _node;
 
   StyledElement({
     this.name = "[[No name]]",
@@ -19,17 +19,17 @@ class StyledElement {
     this.elementClasses,
     this.children,
     this.style,
-    dom.Element node,
+    dom.Element? node,
   }) : this._node = node;
 
   bool matchesSelector(String selector) =>
-      _node != null && matches(_node, selector);
+      _node != null && matches(_node as dom.Element, selector);
 
-  Map<String, String> get attributes => _node.attributes.map((key, value) {
-        return MapEntry(key, value);
+  Map<String, String> get attributes => _node!.attributes.map((key, value) {
+        return MapEntry(key as String, value);
       });
 
-  dom.Element get element => _node;
+  dom.Element? get element => _node as dom.Element?;
 
   @override
   String toString() {
@@ -95,7 +95,7 @@ StyledElement parseStyledElement(
       break;
     case "blockquote":
       //TODO(Sub6Resources) this is a workaround for collapsing margins. Remove.
-      if (element.parent.localName == "blockquote") {
+      if (element.parent!.localName == "blockquote") {
         styledElement.style = Style(
           margin: const EdgeInsets.only(left: 40.0, right: 40.0, bottom: 14.0),
           display: Display.BLOCK,
@@ -281,7 +281,7 @@ StyledElement parseStyledElement(
     case "ol":
     case "ul":
       //TODO(Sub6Resources): This is a workaround for collapsed margins. Remove.
-      if (element.parent.localName == "li") {
+      if (element.parent!.localName == "li") {
         styledElement.style = Style(
 //          margin: EdgeInsets.only(left: 30.0),
           display: Display.BLOCK,

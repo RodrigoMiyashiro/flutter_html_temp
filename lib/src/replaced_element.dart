@@ -25,13 +25,13 @@ abstract class ReplacedElement extends StyledElement {
   PlaceholderAlignment alignment;
 
   ReplacedElement(
-      {String name,
-      Style style,
-      dom.Element node,
+      {String? name,
+      Style? style,
+      dom.Element? node,
       this.alignment = PlaceholderAlignment.aboveBaseline})
       : super(name: name, children: null, style: style, node: node);
 
-  static List<String> parseMediaSources(List<dom.Element> elements) {
+  static List<String?> parseMediaSources(List<dom.Element> elements) {
     return elements
         .where((element) => element.localName == 'source')
         .map((element) {
@@ -39,7 +39,7 @@ abstract class ReplacedElement extends StyledElement {
     }).toList();
   }
 
-  Widget toWidget(RenderContext context);
+  Widget? toWidget(RenderContext context);
 }
 
 Future<bool> _verificationLinkIsValid(String url) async {
@@ -53,88 +53,88 @@ Future<bool> _verificationLinkIsValid(String url) async {
 
 /// [TextContentElement] is a [ContentElement] with plaintext as its content.
 class TextContentElement extends ReplacedElement {
-  String text;
+  String? text;
 
   TextContentElement({
-    Style style,
+    Style? style,
     this.text,
   }) : super(name: "[text]", style: style);
 
   @override
   String toString() {
-    return "\"${text.replaceAll("\n", "\\n")}\"";
+    return "\"${text!.replaceAll("\n", "\\n")}\"";
   }
 
   @override
-  Widget toWidget(_) => null;
+  Widget? toWidget(_) => null;
 }
 
 /// [ImageContentElement] is a [ReplacedElement] with an image as its content.
 /// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img
 class ImageContentElement extends ReplacedElement {
-  final String src;
-  final String alt;
+  final String? src;
+  final String? alt;
 
   ImageContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.alt,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
   Widget toWidget(RenderContext context) {
     Widget imageWidget;
     if (src == null) {
-      imageWidget = Text(alt ?? "", style: context.style.generateTextStyle());
-    } else if (src.startsWith("data:image") && src.contains("base64,")) {
-      final decodedImage = base64.decode(src.split("base64,")[1].trim());
+      imageWidget = Text(alt ?? "", style: context.style!.generateTextStyle());
+    } else if (src!.startsWith("data:image") && src!.contains("base64,")) {
+      final decodedImage = base64.decode(src!.split("base64,")[1].trim());
       precacheImage(
         MemoryImage(decodedImage),
-        context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
-          context.parser.onImageError?.call(exception, stackTrace);
+        context.buildContext!,
+        onError: (exception, StackTrace? stackTrace) {
+          context.parser!.onImageError?.call(exception, stackTrace);
         },
       );
       imageWidget = Image.memory(
         decodedImage,
         frameBuilder: (ctx, child, frame, _) {
           if (frame == null) {
-            return Text(alt ?? "", style: context.style.generateTextStyle());
+            return Text(alt ?? "", style: context.style!.generateTextStyle());
           }
           return child;
         },
       );
-    } else if (src.startsWith("asset:")) {
-      final assetPath = src.replaceFirst('asset:', '');
+    } else if (src!.startsWith("asset:")) {
+      final assetPath = src!.replaceFirst('asset:', '');
       precacheImage(
         AssetImage(assetPath),
-        context.buildContext,
-        onError: (exception, StackTrace stackTrace) {
-          context.parser.onImageError?.call(exception, stackTrace);
+        context.buildContext!,
+        onError: (exception, StackTrace? stackTrace) {
+          context.parser!.onImageError?.call(exception, stackTrace);
         },
       );
       imageWidget = Image.asset(
         assetPath,
         frameBuilder: (ctx, child, frame, _) {
           if (frame == null) {
-            return Text(alt ?? "", style: context.style.generateTextStyle());
+            return Text(alt ?? "", style: context.style!.generateTextStyle());
           }
           return child;
         },
       );
     } else {
       imageWidget = FutureBuilder<bool>(
-        future: _verificationLinkIsValid(src),
+        future: _verificationLinkIsValid(src!),
         initialData: null,
         builder: (_, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          if (snapshot.data) {
+          if (snapshot.data!) {
             return Image.network(
-              src,
+              src!,
               errorBuilder: (_, error, stackTrace) {
                 return Center(
                     child: Icon(
@@ -145,7 +145,7 @@ class ImageContentElement extends ReplacedElement {
               frameBuilder: (ctx, child, frame, _) {
                 if (frame == null) {
                   return Text(alt ?? "",
-                      style: context.style.generateTextStyle());
+                      style: context.style!.generateTextStyle());
                 }
                 return child;
               },
@@ -163,7 +163,7 @@ class ImageContentElement extends ReplacedElement {
     return ContainerSpan(
       style: style,
       newContext: context,
-      shrinkWrap: context.parser.shrinkWrap,
+      shrinkWrap: context.parser!.shrinkWrap,
       child: RawGestureDetector(
         child: imageWidget,
         gestures: {
@@ -171,7 +171,7 @@ class ImageContentElement extends ReplacedElement {
               MultipleTapGestureRecognizer>(
             () => MultipleTapGestureRecognizer(),
             (instance) {
-              instance..onTap = () => context.parser.onImageTap?.call(src);
+              instance..onTap = () => context.parser!.onImageTap?.call(src);
             },
           ),
         },
@@ -182,21 +182,21 @@ class ImageContentElement extends ReplacedElement {
 
 /// [IframeContentElement is a [ReplacedElement] with web content.
 class IframeContentElement extends ReplacedElement {
-  final String src;
-  final double width;
-  final double height;
+  final String? src;
+  final double? width;
+  final double? height;
 
   IframeContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.width,
     this.height,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   String get _urlWebView {
-    String result = src;
+    String result = src!;
     if (result.startsWith('//')) {
       result = result.replaceRange(0, 2, 'https://');
     }
@@ -212,10 +212,10 @@ class IframeContentElement extends ReplacedElement {
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
         }
-        if (snapshot.data) {
+        if (snapshot.data!) {
           return Container(
-            width: MediaQuery.of(context.buildContext).size.width,
-            height: MediaQuery.of(context.buildContext).size.height * 0.75,
+            width: MediaQuery.of(context.buildContext!).size.width,
+            height: MediaQuery.of(context.buildContext!).size.height * 0.75,
             child: WebView(
               initialUrl: _urlWebView,
               javascriptMode: JavascriptMode.unrestricted,
@@ -237,43 +237,43 @@ class IframeContentElement extends ReplacedElement {
 
 /// [AudioContentElement] is a [ContentElement] with an audio file as its content.
 class AudioContentElement extends ReplacedElement {
-  final List<String> src;
-  final bool showControls;
-  final bool autoplay;
-  final bool loop;
-  final bool muted;
+  final List<String?>? src;
+  final bool? showControls;
+  final bool? autoplay;
+  final bool? loop;
+  final bool? muted;
 
   AudioContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.showControls,
     this.autoplay,
     this.loop,
     this.muted,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
   Widget toWidget(RenderContext context) {
     return Container(
-        width: context.style.width ?? 300,
+        width: context.style!.width ?? 300,
         child: FutureBuilder<bool>(
-          future: _verificationLinkIsValid(src.first),
+          future: _verificationLinkIsValid(src!.first!),
           initialData: null,
           builder: (_, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
-            if (snapshot.data) {
+            if (snapshot.data!) {
               return ChewieAudio(
                 controller: ChewieAudioController(
                   videoPlayerController: VideoPlayerController.network(
-                    src.first ?? "",
+                    src!.first ?? "",
                   ),
-                  autoPlay: autoplay,
-                  looping: loop,
-                  showControls: showControls,
+                  autoPlay: autoplay!,
+                  looping: loop!,
+                  showControls: showControls!,
                   autoInitialize: true,
                 ),
               );
@@ -286,18 +286,18 @@ class AudioContentElement extends ReplacedElement {
 
 /// [VideoContentElement] is a [ContentElement] with a video file as its content.
 class VideoContentElement extends ReplacedElement {
-  final List<String> src;
-  final String poster;
-  final bool showControls;
-  final bool autoplay;
-  final bool loop;
-  final bool muted;
-  final double width;
-  final double height;
+  final List<String?>? src;
+  final String? poster;
+  final bool? showControls;
+  final bool? autoplay;
+  final bool? loop;
+  final bool? muted;
+  final double? width;
+  final double? height;
 
   VideoContentElement({
-    String name,
-    Style style,
+    String? name,
+    Style? style,
     this.src,
     this.poster,
     this.showControls,
@@ -306,34 +306,34 @@ class VideoContentElement extends ReplacedElement {
     this.muted,
     this.width,
     this.height,
-    dom.Element node,
+    dom.Element? node,
   }) : super(name: name, style: style, node: node);
 
   @override
   Widget toWidget(RenderContext context) {
-    print('PLAYER VIDEO ${src.first}');
+    print('PLAYER VIDEO ${src!.first}');
     return Container(
         width: width ?? (height ?? 150) * 2,
         height: height ?? (width ?? 300) / 2,
         child: FutureBuilder<bool>(
-          future: _verificationLinkIsValid(src.first),
+          future: _verificationLinkIsValid(src!.first!),
           initialData: null,
           builder: (_, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
-            if (snapshot.data) {
+            if (snapshot.data!) {
               return Chewie(
                 controller: ChewieController(
                   videoPlayerController: VideoPlayerController.network(
-                    src.first ?? "",
+                    src!.first ?? "",
                   ),
                   placeholder: poster != null
-                      ? Image.network(poster)
+                      ? Image.network(poster!)
                       : Container(color: Colors.black),
-                  autoPlay: autoplay,
-                  looping: loop,
-                  showControls: showControls,
+                  autoPlay: autoplay!,
+                  looping: loop!,
+                  showControls: showControls!,
                   autoInitialize: true,
                 ),
               );
@@ -346,9 +346,9 @@ class VideoContentElement extends ReplacedElement {
 
 /// [SvgContentElement] is a [ReplacedElement] with an SVG as its contents.
 class SvgContentElement extends ReplacedElement {
-  final String data;
-  final double width;
-  final double height;
+  final String? data;
+  final double? width;
+  final double? height;
 
   SvgContentElement({
     this.data,
@@ -359,7 +359,7 @@ class SvgContentElement extends ReplacedElement {
   @override
   Widget toWidget(RenderContext context) {
     return SvgPicture.string(
-      data,
+      data!,
       width: width,
       height: height,
     );
@@ -367,24 +367,24 @@ class SvgContentElement extends ReplacedElement {
 }
 
 class EmptyContentElement extends ReplacedElement {
-  EmptyContentElement({String name = "empty"}) : super(name: name);
+  EmptyContentElement({String? name = "empty"}) : super(name: name);
 
   @override
-  Widget toWidget(_) => null;
+  Widget? toWidget(_) => null;
 }
 
 class RubyElement extends ReplacedElement {
   dom.Element element;
 
-  RubyElement({@required this.element, String name = "ruby"})
+  RubyElement({required this.element, String name = "ruby"})
       : super(name: name, alignment: PlaceholderAlignment.middle);
 
   @override
   Widget toWidget(RenderContext context) {
-    dom.Node textNode;
-    List<Widget> widgets = List<Widget>();
+    dom.Node? textNode;
+    List<Widget> widgets = <Widget>[];
     //TODO calculate based off of parent font size.
-    final rubySize = max(9.0, context.style.fontSize.size / 2);
+    final rubySize = max(9.0, context.style!.fontSize!.size! / 2);
     final rubyYPos = rubySize + rubySize / 2;
     element.nodes.forEach((c) {
       if (c.nodeType == dom.Node.TEXT_NODE) {
@@ -402,12 +402,12 @@ class RubyElement extends ReplacedElement {
                           transform:
                               Matrix4.translationValues(0, -(rubyYPos), 0),
                           child: Text(c.innerHtml,
-                              style: context.style
+                              style: context.style!
                                   .generateTextStyle()
                                   .copyWith(fontSize: rubySize))))),
               Container(
-                  child: Text(textNode.text.trim(),
-                      style: context.style.generateTextStyle())),
+                  child: Text(textNode!.text!.trim(),
+                      style: context.style!.generateTextStyle())),
             ],
           );
           widgets.add(widget);
@@ -426,7 +426,7 @@ class RubyElement extends ReplacedElement {
 ReplacedElement parseReplacedElement(dom.Element element) {
   switch (element.localName) {
     case "audio":
-      final sources = <String>[
+      final sources = <String?>[
         if (element.attributes['src'] != null) element.attributes['src'],
         ...ReplacedElement.parseMediaSources(element.children),
       ];
@@ -459,7 +459,7 @@ ReplacedElement parseReplacedElement(dom.Element element) {
         node: element,
       );
     case "video":
-      final sources = <String>[
+      final sources = <String?>[
         if (element.attributes['src'] != null) element.attributes['src'],
         ...ReplacedElement.parseMediaSources(element.children),
       ];
@@ -493,7 +493,7 @@ ReplacedElement parseReplacedElement(dom.Element element) {
 // TODO(Sub6Resources): Remove when https://github.com/flutter/flutter/issues/36304 is resolved
 class PlatformViewVerticalGestureRecognizer
     extends VerticalDragGestureRecognizer {
-  PlatformViewVerticalGestureRecognizer({PointerDeviceKind kind})
+  PlatformViewVerticalGestureRecognizer({PointerDeviceKind? kind})
       : super(kind: kind);
 
   Offset _dragDistance = Offset.zero;

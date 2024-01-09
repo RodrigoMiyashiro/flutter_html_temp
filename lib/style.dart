@@ -9,109 +9,109 @@ class Style {
   ///
   /// Inherited: no,
   /// Default: Colors.transparent,
-  Color backgroundColor;
+  Color? backgroundColor;
 
   /// CSS attribute "`color`"
   ///
   /// Inherited: yes,
   /// Default: unspecified,
-  Color color;
+  Color? color;
 
   /// CSS attribute "`direction`"
   ///
   /// Inherited: yes,
   /// Default: TextDirection.ltr,
-  TextDirection direction;
+  TextDirection? direction;
 
   /// CSS attribute "`display`"
   ///
   /// Inherited: no,
   /// Default: unspecified,
-  Display display;
+  Display? display;
 
   /// CSS attribute "`font-family`"
   ///
   /// Inherited: yes,
   /// Default: Theme.of(context).style.textTheme.body1.fontFamily
-  String fontFamily;
+  String? fontFamily;
 
   /// CSS attribute "`font-feature-settings`"
   ///
   /// Inherited: yes,
   /// Default: normal
-  List<FontFeature> fontFeatureSettings;
+  List<FontFeature>? fontFeatureSettings;
 
   /// CSS attribute "`font-size`"
   ///
   /// Inherited: yes,
   /// Default: FontSize.medium
-  FontSize fontSize;
+  FontSize? fontSize;
 
   /// CSS attribute "`font-style`"
   ///
   /// Inherited: yes,
   /// Default: FontStyle.normal,
-  FontStyle fontStyle;
+  FontStyle? fontStyle;
 
   /// CSS attribute "`font-weight`"
   ///
   /// Inherited: yes,
   /// Default: FontWeight.normal,
-  FontWeight fontWeight;
+  FontWeight? fontWeight;
 
   /// CSS attribute "`height`"
   ///
   /// Inherited: no,
   /// Default: Unspecified (null),
-  double height;
+  double? height;
 
   /// CSS attribute "`letter-spacing`"
   ///
   /// Inherited: yes,
   /// Default: normal (0),
-  double letterSpacing;
+  double? letterSpacing;
 
   /// CSS attribute "`list-style-type`"
   ///
   /// Inherited: yes,
   /// Default: ListStyleType.DISC
-  ListStyleType listStyleType;
+  ListStyleType? listStyleType;
 
   /// CSS attribute "`padding`"
   ///
   /// Inherited: no,
   /// Default: EdgeInsets.zero
-  EdgeInsets padding;
+  EdgeInsets? padding;
 
   /// CSS attribute "`margin`"
   ///
   /// Inherited: no,
   /// Default: EdgeInsets.zero
-  EdgeInsets margin;
+  EdgeInsets? margin;
 
   /// CSS attribute "`text-align`"
   ///
   /// Inherited: yes,
   /// Default: TextAlign.start,
-  TextAlign textAlign;
+  TextAlign? textAlign;
 
   /// CSS attribute "`text-decoration`"
   ///
   /// Inherited: no,
   /// Default: TextDecoration.none,
-  TextDecoration textDecoration;
+  TextDecoration? textDecoration;
 
   /// CSS attribute "`text-decoration-color`"
   ///
   /// Inherited: no,
   /// Default: Current color
-  Color textDecorationColor;
+  Color? textDecorationColor;
 
   /// CSS attribute "`text-decoration-style`"
   ///
   /// Inherited: no,
   /// Default: TextDecorationStyle.solid,
-  TextDecorationStyle textDecorationStyle;
+  TextDecorationStyle? textDecorationStyle;
 
   /// Loosely based on CSS attribute "`text-decoration-thickness`"
   ///
@@ -120,44 +120,44 @@ class Style {
   /// Inherited: no,
   /// Default: 1.0 (specified by font size)
   // TODO(Sub6Resources): Possibly base this more closely on the CSS attribute.
-  double textDecorationThickness;
+  double? textDecorationThickness;
 
   /// CSS attribute "`text-shadow`"
   ///
   /// Inherited: yes,
   /// Default: none,
-  List<Shadow> textShadow;
+  List<Shadow>? textShadow;
 
   /// CSS attribute "`vertical-align`"
   ///
   /// Inherited: no,
   /// Default: VerticalAlign.BASELINE,
-  VerticalAlign verticalAlign;
+  VerticalAlign? verticalAlign;
 
   /// CSS attribute "`white-space`"
   ///
   /// Inherited: yes,
   /// Default: WhiteSpace.NORMAL,
-  WhiteSpace whiteSpace;
+  WhiteSpace? whiteSpace;
 
   /// CSS attribute "`width`"
   ///
   /// Inherited: no,
   /// Default: unspecified (null)
-  double width;
+  double? width;
 
   /// CSS attribute "`word-spacing`"
   ///
   /// Inherited: yes,
   /// Default: normal (0)
-  double wordSpacing;
+  double? wordSpacing;
 
   //TODO modify these to match CSS styles
-  String before;
-  String after;
-  Border border;
-  Alignment alignment;
-  String markerContent;
+  String? before;
+  String? after;
+  Border? border;
+  Alignment? alignment;
+  String? markerContent;
 
   Style({
     this.backgroundColor = Colors.transparent,
@@ -263,7 +263,7 @@ class Style {
     );
   }
 
-  Style copyOnlyInherited(Style child) {
+  Style copyOnlyInherited(Style? child) {
     if (child == null) return this;
 
     return child.copyWith(
@@ -284,35 +284,35 @@ class Style {
   }
 
   Style copyWith({
-    Color backgroundColor,
-    Color color,
-    TextDirection direction,
-    Display display,
-    String fontFamily,
-    List<FontFeature> fontFeatureSettings,
-    FontSize fontSize,
-    FontStyle fontStyle,
-    FontWeight fontWeight,
-    double height,
-    double letterSpacing,
-    ListStyleType listStyleType,
-    EdgeInsets padding,
-    EdgeInsets margin,
-    TextAlign textAlign,
-    TextDecoration textDecoration,
-    Color textDecorationColor,
-    TextDecorationStyle textDecorationStyle,
-    double textDecorationThickness,
-    List<Shadow> textShadow,
-    VerticalAlign verticalAlign,
-    WhiteSpace whiteSpace,
-    double width,
-    double wordSpacing,
-    String before,
-    String after,
-    Border border,
-    Alignment alignment,
-    String markerContent,
+    Color? backgroundColor,
+    Color? color,
+    TextDirection? direction,
+    Display? display,
+    String? fontFamily,
+    List<FontFeature>? fontFeatureSettings,
+    FontSize? fontSize,
+    FontStyle? fontStyle,
+    FontWeight? fontWeight,
+    double? height,
+    double? letterSpacing,
+    ListStyleType? listStyleType,
+    EdgeInsets? padding,
+    EdgeInsets? margin,
+    TextAlign? textAlign,
+    TextDecoration? textDecoration,
+    Color? textDecorationColor,
+    TextDecorationStyle? textDecorationStyle,
+    double? textDecorationThickness,
+    List<Shadow>? textShadow,
+    VerticalAlign? verticalAlign,
+    WhiteSpace? whiteSpace,
+    double? width,
+    double? wordSpacing,
+    String? before,
+    String? after,
+    Border? border,
+    Alignment? alignment,
+    String? markerContent,
   }) {
     return Style(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -374,7 +374,7 @@ enum Display {
 }
 
 class FontSize {
-  final double size;
+  final double? size;
 
   const FontSize(this.size);
 
