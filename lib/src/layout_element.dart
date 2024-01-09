@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableNullableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/src/html_elements.dart';
@@ -9,10 +10,10 @@ import 'package:html/dom.dart' as dom;
 /// an html document with a more complex layout. LayoutElements handle
 abstract class LayoutElement extends StyledElement {
   LayoutElement({
-    String name,
-    List<StyledElement> children,
-    Style style,
-    dom.Element node,
+    String? name,
+    List<StyledElement>? children,
+    Style? style,
+    dom.Element? node,
   }) : super(name: name, children: children, style: style, node: node);
 
   Widget toWidget(RenderContext context);
@@ -20,26 +21,26 @@ abstract class LayoutElement extends StyledElement {
 
 class TableLayoutElement extends LayoutElement {
   TableLayoutElement({
-    String name,
-    Style style,
-    @required List<StyledElement> children,
-    dom.Element node,
+    String? name,
+    Style? style,
+    required List<StyledElement> children,
+    dom.Element? node,
   }) : super(name: name, style: style, children: children, node: node);
 
   @override
   Widget toWidget(RenderContext context) {
-    final colWidths = children
+    final colWidths = children!
         .where((c) => c.name == "colgroup")
         .map((group) {
-          return group.children.where((c) => c.name == "col").map((c) {
+          return group.children!.where((c) => c.name == "col").map((c) {
             final widthStr = c.attributes["width"] ?? "";
             if (widthStr.endsWith("%")) {
               final width =
-                  double.tryParse(widthStr.substring(0, widthStr.length - 1)) *
+                  double.tryParse(widthStr.substring(0, widthStr.length - 1))! *
                       0.01;
               return FractionColumnWidth(width);
             } else {
-              final width = double.tryParse(widthStr);
+              final width = double.tryParse(widthStr)!;
               return FixedColumnWidth(width);
             }
           });
@@ -50,25 +51,25 @@ class TableLayoutElement extends LayoutElement {
 
     return Container(
         decoration: BoxDecoration(
-          color: style.backgroundColor,
-          border: style.border,
+          color: style!.backgroundColor,
+          border: style!.border,
         ),
-        width: style.width,
-        height: style.height,
+        width: style!.width,
+        height: style!.height,
         child: Table(
           columnWidths: colWidths,
-          children: children
+          children: children!
               .map((c) {
                 if (c is TableSectionLayoutElement) {
                   return c.toTableRows(context);
                 }
                 return null;
               })
-              .where((t) {
-                return t != null;
-              })
+              .where((t) => t != null)
               .toList()
-              .expand((i) => i)
+              .expand((i) => i ?? [])
+              .toList()
+              .whereType<TableRow>()
               .toList(),
         ));
   }
@@ -76,8 +77,8 @@ class TableLayoutElement extends LayoutElement {
 
 class TableSectionLayoutElement extends LayoutElement {
   TableSectionLayoutElement({
-    String name,
-    @required List<StyledElement> children,
+    String? name,
+    required List<StyledElement> children,
   }) : super(name: name, children: children);
 
   @override
@@ -85,8 +86,8 @@ class TableSectionLayoutElement extends LayoutElement {
     return Container(child: Text("TABLE SECTION"));
   }
 
-  List<TableRow> toTableRows(RenderContext context) {
-    return children.map((c) {
+  List<TableRow?> toTableRows(RenderContext context) {
+    return children!.map((c) {
       if (c is TableRowLayoutElement) {
         return c.toTableRow(context);
       }
@@ -99,9 +100,9 @@ class TableSectionLayoutElement extends LayoutElement {
 
 class TableRowLayoutElement extends LayoutElement {
   TableRowLayoutElement({
-    String name,
-    @required List<StyledElement> children,
-    dom.Element node,
+    String? name,
+    required List<StyledElement> children,
+    dom.Element? node,
   }) : super(name: name, children: children, node: node);
 
   @override
@@ -112,37 +113,37 @@ class TableRowLayoutElement extends LayoutElement {
   TableRow toTableRow(RenderContext context) {
     return TableRow(
         decoration: BoxDecoration(
-          border: style.border,
-          color: style.backgroundColor,
+          border: style!.border,
+          color: style!.backgroundColor,
         ),
-        children: children
+        children: children!
             .map((c) {
               if (c is StyledElement && c.name == 'td' || c.name == 'th') {
                 return TableCell(
                     child: Container(
-                        padding: c.style.padding,
+                        padding: c.style!.padding,
                         decoration: BoxDecoration(
-                          color: c.style.backgroundColor,
-                          border: c.style.border,
+                          color: c.style!.backgroundColor,
+                          border: c.style!.border,
                         ),
                         child: StyledText(
-                          textSpan: context.parser.parseTree(context, c),
+                          textSpan: context.parser!.parseTree(context, c),
                           style: c.style,
                         )));
               }
               return null;
             })
-            .where((c) => c != null)
+            .whereNotNull()
             .toList());
   }
 }
 
 class TableStyleElement extends StyledElement {
   TableStyleElement({
-    String name,
-    List<StyledElement> children,
-    Style style,
-    dom.Element node,
+    String? name,
+    List<StyledElement>? children,
+    Style? style,
+    dom.Element? node,
   }) : super(name: name, children: children, style: style, node: node);
 }
 
