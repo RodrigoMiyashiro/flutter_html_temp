@@ -494,7 +494,7 @@ ReplacedElement parseReplacedElement(dom.Element element) {
 class PlatformViewVerticalGestureRecognizer
     extends VerticalDragGestureRecognizer {
   PlatformViewVerticalGestureRecognizer({PointerDeviceKind? kind})
-      : super(supportedDevices: <PointerDeviceKind>{kind!});
+      : super(supportedDevices: kind != null ? <PointerDeviceKind>{kind} : {});
 
   Offset _dragDistance = Offset.zero;
 
