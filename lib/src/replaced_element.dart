@@ -138,7 +138,8 @@ class ImageContentElement extends ReplacedElement {
               errorBuilder: (_, error, stackTrace) {
                 return Center(
                     child: Icon(
-                  Icons.error,
+                  Icons.error_sharp,
+                  color: Colors.black,
                   size: 50,
                 ));
               },
@@ -153,7 +154,8 @@ class ImageContentElement extends ReplacedElement {
           }
           return Center(
               child: Icon(
-            Icons.error,
+            Icons.error_sharp,
+            color: Colors.black,
             size: 50,
           ));
         },
@@ -227,7 +229,8 @@ class IframeContentElement extends ReplacedElement {
         }
         return Center(
             child: Icon(
-          Icons.error,
+          Icons.error_sharp,
+          color: Colors.black,
           size: 50,
         ));
       },
